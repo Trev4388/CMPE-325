@@ -1,9 +1,11 @@
 import PySimpleGUI as sg
-from Gesture_Rec import Main
+#from Gesture_Rec import Main
 
-gestureControl = Main.GestureControl()
+#gestureControl = Main.GestureControl()
 
-sg.theme("DarkBlue")
+#sg.theme("DarkBlue")
+#sg.theme_previewer()
+sg.theme("DarkTeal7")
 
 layoutLaunch = [[sg.Text("Welcome to the launch")],
                 [sg.Text("Click to close")], [sg.Button("Close")]]
@@ -63,6 +65,13 @@ def createwindow2():
                 [sg.Text("Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder")]]
     return sg.Window("Gesture Control Home", layoutHome, element_justification='c', size=(750,700))
 
+# def createwindow3():
+#     layoutList = [[sg.Text("Below is a list of all the commands and what they do.", font=(500))],
+#                   [sg.Image(filename=imgs[7])],
+#                   [sg.Text("Live long gesture: Pause/Play")],
+#                   [sg.Text("Fist gesture: Decrease Volume")],
+#                   [sg.Text("Rock gesture: Increase Volume")]]
+
 Tutorial = True
 Back = False
 windowHome = createwindow2()
@@ -121,8 +130,8 @@ while True:
     elif event == "Start":
         windowHome.close()
         print("thing")
-        gestureControl.running = True
-        gestureControl.run()
+        #gestureControl.running = True
+        #gestureControl.run()
         windowHome = createwindow2()
 
         #event, values = windowLaunch.read()
