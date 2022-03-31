@@ -2,12 +2,13 @@
 
 # import necessary packages
 
-import cv2 #
-import numpy as np # 
-import mediapipe as mp #
-import tensorflow as tf #
-from tensorflow.keras.models import load_model #
-import pyautogui as p  #pip install pyautogui
+import cv2
+import mediapipe as mp
+import numpy as np
+import tensorflow as tf
+import pyautogui as p  # pip install pyautogui
+#from tensorflow.keras.models import load_model  #
+from tensorflow.python.keras.models import load_model
 
 class GestureControl:
     def __init__(self,running = False):

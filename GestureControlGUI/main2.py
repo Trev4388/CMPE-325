@@ -30,14 +30,15 @@ text1s = ["The purpose of the tutorial is to demonstrate how to perform each rec
         "You can now launch the gesture recognition system by clicking the 'Start' button below."]
 text2s = ["The first recognized gesture is called 'live long' and can be seen below:",
         "Click the 'Next' button to view the next gesture",
-        "Please make sure you have selected the tab in which the video is playing before attemting gestures."]
+        "Please make sure you have selected the tab in which the video is playing before attemting gestures.\n                                                     Press 'Q' to end gesture control."] #3
 imgs = ["Images/live_long(pauseplay).png",
         "Images/fist(DecreaseVolume).png",
         "Images/rock(IncreaseVolume).png",
         "Images/peace(skipBack).png",
         "Images/okay(skipForwards).png",
         "Images/thumbsDown(DecSpeed).png",
-        "Images/thumbsUp(IncSpeed).png"]
+        "Images/thumbsUp(IncSpeed).png",
+        "Images/logo.png"]
 
 def createwindow():
     layout = [[sg.Text(heads[0], key = "_head_", visible=True)],
@@ -51,9 +52,15 @@ def createwindow():
     return sg.Window("Gesture Control Tutorial", layout, element_justification='c', size=(750,700))
 
 def createwindow2():
-    layoutHome = [[sg.Text("Click to view gesture options")], [sg.Button("Tutorial")],
+    layoutHome = [[sg.Text("Welcome to Gesture Control", font=(500))],
+                [sg.Image(filename=imgs[7])],
+                [sg.Text("", size=(2,2))],
+                [sg.Text("Click to view gesture options")], [sg.Button("Tutorial")],
                 [sg.Text("Click to launch Gesture Control")], [sg.Button("Start")],
-                [sg.Text("Click to close Gesture Control")], [sg.Button("Close")]]
+                [sg.Text("Click to close Gesture Control")], [sg.Button("Close")],
+                [sg.Text("", size=(8,8))],
+                [sg.Text("Developed for CISC/CMPE 325 by:")],
+                [sg.Text("Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder")]]
     return sg.Window("Gesture Control Home", layoutHome, element_justification='c', size=(750,700))
 
 Tutorial = True
@@ -87,15 +94,18 @@ while True:
                     Tutorial = False
                 elif tutPage == 1:
                     windowTutorial["_text3_"].update(visible = False)
-                    windowTutorial["_text4_"].update(visible = False)
-                    windowTutorial["_text2_"].update(text2s[1])
+                    #windowTutorial["_text4_"].update(visible = False)
+                    #windowTutorial["_text2_"].update(text2s[1])
+                    windowTutorial["_text2_"].update(visible = False)
                 elif tutPage == 0:
+                    windowTutorial["_text2_"].update(visible = True)
                     windowTutorial["_text3_"].update(visible = True)
                     windowTutorial["_text4_"].update(visible = True)
                 elif tutPage == 7:
                     windowTutorial["Next"].update("Start")
-                    windowTutorial["_text2_"].update(text2s[2])
-                    windowTutorial["_img_"].update(visible=False)
+                    windowTutorial["_text2_"].update(text2s[2], visible=True)
+                    windowTutorial["_img_"].update(imgs[7])
+                    windowTutorial["_text4_"].update(visible = False)
                 elif tutPage == 6 and Back == True:
                     windowTutorial["Next"].update("Next")
                     windowTutorial["_text2_"].update(text2s[0])
@@ -120,9 +130,9 @@ while True:
         #     windowLaunch.close()
         #     quit()
 
-    elif event == "Stop" or event == sg.WIN_CLOSED:
-        gestureControl.running = False
+    #elif event == "Stop" or event == sg.WIN_CLOSED:
+        #gestureControl.running = False
 
-    elif event == sg.WIN_CLOSED:
+    elif event == "Close" or event == sg.WIN_CLOSED:
         windowHome.close()
         quit()
