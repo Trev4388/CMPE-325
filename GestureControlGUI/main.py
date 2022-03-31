@@ -103,5 +103,5 @@ while True:
             quit()
 
     elif event == "Close":
-        windowHome.close();
+        windowHome.close()
         quit()
