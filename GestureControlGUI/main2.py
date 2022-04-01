@@ -1,12 +1,13 @@
 import PySimpleGUI as sg
 from Gesture_Rec import Main
+import threading
+
 
 gestureControl = Main.GestureControl()
-
 sg.theme("DarkBlue")
 
 layoutLaunch = [[sg.Text("Welcome to the launch")],
-                [sg.Text("Click to close")], [sg.Button("Close")]]
+                [sg.Text("Click to close")], [sg.Button("Stop")]]
 
 # Create the window
 
@@ -56,8 +57,8 @@ def createwindow2():
                 [sg.Image(filename=imgs[7])],
                 [sg.Text("", size=(2,2))],
                 [sg.Text("Click to view gesture options")], [sg.Button("Tutorial")],
-                [sg.Text("Click to launch Gesture Control")], [sg.Button("Start")],
-                [sg.Text("Click to close Gesture Control")], [sg.Button("Close")],
+                [sg.Text("Click to launch Gesture Control")], [sg.Button("Start"),sg.Checkbox("Display visuals", default = True, key = "_display_")],
+                [sg.Text("Click to close Gesture Control")], [sg.Button("Stop")],
                 [sg.Text("", size=(8,8))],
                 [sg.Text("Developed for CISC/CMPE 325 by:")],
                 [sg.Text("Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder")]]
@@ -117,22 +118,24 @@ while True:
                     windowTutorial["_text1_"].update(text1s[tutPage])
         Tutorial = True
         #event, values = windowHome.read()
-
-    elif event == "Start":
-        windowHome.close()
-        print("thing")
+    elif event == "Start" and gestureControl.running == False:
+        print(values["_display_"])
+        gestureControl.visual = values["_display_"]
         gestureControl.running = True
-        gestureControl.run()
-        windowHome = createwindow2()
+        thread = threading.Thread(target = gestureControl.run)
+        thread.start()
 
         #event, values = windowLaunch.read()
         # if event == "Close" or event==sg.WIN_CLOSED:
         #     windowLaunch.close()
         #     quit()
 
-    #elif event == "Stop" or event == sg.WIN_CLOSED:
-        #gestureControl.running = False
+    elif event == "Stop" and gestureControl.running == True:
+        gestureControl.running = False
+        thread.join()
 
-    elif event == "Close" or event == sg.WIN_CLOSED:
+    elif event == sg.WIN_CLOSED:
+        if gestureControl.running == True:
+            thread.join()
         windowHome.close()
         quit()

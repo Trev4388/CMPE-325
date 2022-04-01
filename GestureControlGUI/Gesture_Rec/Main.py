@@ -13,26 +13,22 @@ from tensorflow.python.keras.models import load_model
 class GestureControl:
     def __init__(self,running = False):
         self.running = running
-    def run(self):
-        # initialize mediapipe
-        mpHands = mp.solutions.hands
-        hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
-        mpDraw = mp.solutions.drawing_utils
+        self.visual = True
 
+        mpHands = mp.solutions.hands
+        self.hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
+        self.mpDraw = mp.solutions.drawing_utils
+        # initialize mediapipe
+       
         # Load the gesture recognizer model
-        model = load_model('Gesture_Rec/mp_hand_gesture')
+        self.model = load_model('Gesture_Rec/mp_hand_gesture')
 
         # Load class names
         f = open('Gesture_Rec/gesture.names', 'r')
-        classNames = f.read().split('\n')
+        self.classNames = f.read().split('\n')
         f.close()
-        print(classNames)
-
-        PrevGesture = None
-        alreadyDone = False
-        stopped = False
-        counter = 0
-        workingGestures = ["peace - Skip Backward",
+        print(self.classNames)
+        self.workingGestures = ["peace - Skip Backward",
                            "fist - Decrease Volume",
                            "okay - Skip Forward",
                            "rock - Increase Volume",
@@ -41,7 +37,12 @@ class GestureControl:
                            "thumbs down - Decrease Playback Speed"]
 
         # Initialize the webcam
+    def run(self):
         cap = cv2.VideoCapture(0)
+        PrevGesture = None
+        alreadyDone = False
+        stopped = False
+        counter = 0
         while self.running:
             # Read each frame from the webcam
             _, frame = cap.read()
@@ -53,7 +54,7 @@ class GestureControl:
             framergb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Get hand landmark prediction
-            result = hands.process(framergb)
+            result = self.hands.process(framergb)
 
             # print(result)
             
@@ -71,21 +72,21 @@ class GestureControl:
                         landmarks.append([lmx, lmy])
 
                     # Drawing landmarks on frames
-                    mpDraw.draw_landmarks(frame, handslms, mpHands.HAND_CONNECTIONS,
-                                                mpDraw.DrawingSpec(color=(121, 22, 76), thickness=2, circle_radius=4),
-                                                mpDraw.DrawingSpec(color=(250, 44, 250), thickness=2, circle_radius=2),
+                    self.mpDraw.draw_landmarks(frame, handslms, self.mpHands.HAND_CONNECTIONS,
+                                                self.mpDraw.DrawingSpec(color=(121, 22, 76), thickness=2, circle_radius=4),
+                                                self.mpDraw.DrawingSpec(color=(250, 44, 250), thickness=2, circle_radius=2),
                                                  )  
         ##            # Predict gesture
-                    prediction = model.predict([landmarks])
+                    prediction = self.model.predict([landmarks])
         ##            # print(prediction)
                     classID = np.argmax(prediction)
-                    className = classNames[classID]
+                    className = self.classNames[classID]
                     
             # show the prediction on the frame
-                if className in workingGestures:
+                if className in self.workingGestures:
                     #print(counter, PrevGesture, className)
                     cv2.putText(frame, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   0.5, (0,0,255), 2, cv2.LINE_AA)
+                                   0.5, (0,0,255), 1, cv2.LINE_AA)
                     if PrevGesture == className:
                         counter += 1
                     elif PrevGesture != className:
@@ -122,14 +123,14 @@ class GestureControl:
                 alreadyDone = False
                 counter = 0
             # Show the final output
-            cv2.imshow("Output", frame) 
+            if self.visual:
+                cv2.imshow("Output", frame) 
 
             if cv2.waitKey(1) == ord('q'):
                 self.running = False
 
         # release the webcam and destroy all active windows
         cap.release()
-
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":
