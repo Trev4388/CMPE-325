@@ -57,12 +57,19 @@ def createwindow2():
                 [sg.Image(filename=imgs[7])],
                 [sg.Text("", size=(2,2))],
                 [sg.Text("Click to view gesture options")], [sg.Button("Tutorial")],
-                [sg.Text("Click to launch Gesture Control")], [sg.Button("Start"),sg.Checkbox("Display visuals", default = True, key = "_display_")],
+                [sg.Text("Click to launch Gesture Control"),sg.Text("(currently running)",key = "_run_",visible=False)], [sg.Button("Start"),sg.Checkbox("Display visuals", default = True, key = "_display_")],
                 [sg.Text("Click to close Gesture Control")], [sg.Button("Stop")],
                 [sg.Text("", size=(8,8))],
                 [sg.Text("Developed for CISC/CMPE 325 by:")],
                 [sg.Text("Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder")]]
     return sg.Window("Gesture Control Home", layoutHome, element_justification='c', size=(750,700))
+
+# def createwindow3():
+#     layoutList = [[sg.Text("Below is a list of all the commands and what they do.", font=(500))],
+#                   [sg.Image(filename=imgs[7])],
+#                   [sg.Text("Live long gesture: Pause/Play")],
+#                   [sg.Text("Fist gesture: Decrease Volume")],
+#                   [sg.Text("Rock gesture: Increase Volume")]]
 
 Tutorial = True
 Back = False
@@ -122,6 +129,7 @@ while True:
         print(values["_display_"])
         gestureControl.visual = values["_display_"]
         gestureControl.running = True
+        windowHome["_run_"].update(visible = True)
         thread = threading.Thread(target = gestureControl.run)
         thread.start()
 
@@ -131,6 +139,7 @@ while True:
         #     quit()
 
     elif event == "Stop" and gestureControl.running == True:
+        windowHome["_run_"].update(visible = False)
         gestureControl.running = False
         thread.join()
 
