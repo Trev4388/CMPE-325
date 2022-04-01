@@ -15,8 +15,8 @@ class GestureControl:
         self.running = running
         self.visual = True
 
-        mpHands = mp.solutions.hands
-        self.hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
+        self.mpHands = mp.solutions.hands
+        self.hands = self.mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
         self.mpDraw = mp.solutions.drawing_utils
         # initialize mediapipe
        
@@ -46,7 +46,7 @@ class GestureControl:
         while self.running:
             # Read each frame from the webcam
             _, frame = cap.read()
-
+            frame = cv2.resize(frame, (250, 200))
             x, y, c = frame.shape
 
             # Flip the frame vertically
@@ -85,7 +85,7 @@ class GestureControl:
             # show the prediction on the frame
                 if className in self.workingGestures:
                     #print(counter, PrevGesture, className)
-                    cv2.putText(frame, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
+                    cv2.putText(frame, className, (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 
                                    0.5, (0,0,255), 1, cv2.LINE_AA)
                     if PrevGesture == className:
                         counter += 1
@@ -127,7 +127,7 @@ class GestureControl:
                 cv2.imshow("Output", frame) 
 
             if cv2.waitKey(1) == ord('q'):
-                self.running = False
+                pass#self.running = False
 
         # release the webcam and destroy all active windows
         cap.release()

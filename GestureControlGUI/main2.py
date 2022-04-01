@@ -28,10 +28,10 @@ text1s = ["The purpose of the tutorial is to demonstrate how to perform each rec
         "The okay gesture is used to skip forwards in a video.",
         "The thumbs down gesture is used to decrease playback speed in a video.",
         "The thumbs up gesture is used to increase playback speed in a video.",
-        "You can now launch the gesture recognition system by clicking the 'Start' button below."]
+        "You can now launch the gesture recognition system by clicking the 'Start' button on the main screen."]
 text2s = ["The first recognized gesture is called 'live long' and can be seen below:",
         "Click the 'Next' button to view the next gesture",
-        "Please make sure you have selected the tab in which the video is playing before attemting gestures.\n                                                     Press 'Q' to end gesture control."] #3
+        "Please make sure you have selected the tab in which the video is playing before attemting gestures.\n                                                     Press 'stop' on the main page to end gesture control."] #3
 imgs = ["Images/live_long(pauseplay).png",
         "Images/fist(DecreaseVolume).png",
         "Images/rock(IncreaseVolume).png",
@@ -57,8 +57,8 @@ def createwindow2():
                 [sg.Image(filename=imgs[7])],
                 [sg.Text("", size=(2,2))],
                 [sg.Text("Click to view gesture options")], [sg.Button("Tutorial")],
-                [sg.Text("Click to launch Gesture Control"),sg.Text("(currently running)",key = "_run_",visible=False)], [sg.Button("Start"),sg.Checkbox("Display visuals", default = True, key = "_display_")],
-                [sg.Text("Click to close Gesture Control")], [sg.Button("Stop")],
+                [sg.Text("Click to launch the Gesture Control"),sg.Text("(currently running)",key = "_run_",visible=False)], [sg.Button("Start"),sg.Checkbox("Display visuals", default = True, key = "_display_")],
+                [sg.Text("Click to close the Gesture Control")], [sg.Button("Stop")],
                 [sg.Text("", size=(8,8))],
                 [sg.Text("Developed for CISC/CMPE 325 by:")],
                 [sg.Text("Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder")]]
@@ -110,7 +110,7 @@ while True:
                     windowTutorial["_text3_"].update(visible = True)
                     windowTutorial["_text4_"].update(visible = True)
                 elif tutPage == 7:
-                    windowTutorial["Next"].update("Start")
+                    windowTutorial["Next"].update("Finish")
                     windowTutorial["_text2_"].update(text2s[2], visible=True)
                     windowTutorial["_img_"].update(imgs[7])
                     windowTutorial["_text4_"].update(visible = False)
