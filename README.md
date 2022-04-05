@@ -3,7 +3,7 @@
 Developed for CISC/CMPE 325 by:     
 Trevor Kirton, Randy Bornstein, Jordan Belinksy, Andrew Lacey, and JJ Schroeder  
 
-**Instillation Guide** - Source code  
+**Installation Guide** - Source code  
 1. Clone the GitHub Repo onto your machine
 2. Download and install any version of Python3
 3. Install the required Python packages   
